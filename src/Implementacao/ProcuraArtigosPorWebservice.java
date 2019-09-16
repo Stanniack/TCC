@@ -8,9 +8,10 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,8 @@ public class ProcuraArtigosPorWebservice {
     private int DEBUGGER = 2500;
     private int DEBUGGER_TIMER = 0;
     private final int QTD_IDS = 250;
+    // Debug
+    List<String> lista = new ArrayList<>();
 
     public void executa() {
 
@@ -33,7 +36,7 @@ public class ProcuraArtigosPorWebservice {
                 public void run() {
                     try {
                         aplicaMetodo();
-                        Thread.sleep(1000);
+                        //Thread.sleep(1000);
 
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ProcuraArtigosPorWebservice.class.getName()).log(Level.SEVERE, null, ex);
@@ -42,14 +45,13 @@ public class ProcuraArtigosPorWebservice {
 
             }.start();
 
-            //System.out.println("Don't back here, please!");
         }
-
     }
 
     private void aplicaMetodo() throws InterruptedException {
         Long tempoInicial = System.currentTimeMillis();
-        
+        System.out.println("Iniciando download das informações dos artigos da base de dados da PubMed central\n");
+
         while (true) {
 
             this.trataXML(this.requestPubmed());
@@ -62,7 +64,7 @@ public class ProcuraArtigosPorWebservice {
                 DEBUGGER += 2500;
             }
 
-            System.out.println(this.NUMERO_ARTIGO);
+            //System.out.println(this.NUMERO_ARTIGO);
 
         }
 
@@ -145,15 +147,15 @@ public class ProcuraArtigosPorWebservice {
                 try {
 
                     if (xmlContent.toString().contains("ArticleTitle")) {
-                        //System.out.println(doc.getElementsByTagName("ArticleTitle").item(i).getTextContent());
-                    } else {
-                        System.out.println("Sem abstract");
+                        String teste = doc.getElementsByTagName("ArticleTitle").item(i).getTextContent();
+                        //System.out.println(teste);
                     }
 
                 } catch (DOMException e) {
-                    System.out.println("DOM exception: " + e);
+                    //System.out.println("DOM exception: " + e);
+                    //e.printStackTrace();
                 } catch (NullPointerException e) {
-                    System.out.println("Quebra de index: " + e);
+                    //System.out.println("Quebra de index: " + e);
                 }
             }
 

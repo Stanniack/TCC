@@ -18,9 +18,9 @@ import org.jsoup.select.Elements;
  */
 public class ProcuraArtigos {
 
-    private int NUMERO_ARTIGO = 30000000;
+    private int NUMERO_ARTIGO = 1;
     private final int quantidadeThreads = 2;
-    private int DEBUGGER = 30000100;
+    private int DEBUGGER = 100;
 
     public void executa() {
         this.aplicaMetodoTEXT();
@@ -79,7 +79,7 @@ public class ProcuraArtigos {
                 //System.out.println(listaDeInformations);
                 // System.out.println(listaDeAuths);
                 //System.out.println(listaDeAuthorInformations);
-                System.out.println(listaDeAbstracts);
+                //System.out.println(listaDeAbstracts);
                 //System.out.println(listaDeKeyWords);
                 System.out.println(this.NUMERO_ARTIGO);
             } catch (UnknownHostException e) {
