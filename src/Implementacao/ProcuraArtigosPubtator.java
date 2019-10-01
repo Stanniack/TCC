@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Scanner;
+import modelo.Artigo;
 
 public class ProcuraArtigosPubtator {
 
@@ -32,7 +33,8 @@ public class ProcuraArtigosPubtator {
 
                 while (scan.hasNext()) {
                     // Aqui eu devo levar para o banco
-                   System.out.println(scan.nextLine());
+                   //System.out.println(scan.nextLine());
+                    scan.nextLine();
                     debug++;
 
                 }
@@ -47,6 +49,11 @@ public class ProcuraArtigosPubtator {
             }
         }
 
+    }
+    
+    // resolver isso aqui
+    private void persistArticle(String pmid, Artigo artigo) {
+        
     }
 
 }

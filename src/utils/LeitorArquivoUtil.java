@@ -1,4 +1,4 @@
-package Implementacao;
+package utils;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -41,7 +41,7 @@ public class LeitorArquivoUtil {
         List<String> lista = new ArrayList<>();
 
         try {
-            Scanner in = new Scanner(new FileReader("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\TCC\\PMIDS\\pubmed_result5.txt"));
+            Scanner in = new Scanner(new FileReader("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\TCC\\PMIDS\\pubmed_result2.txt"));
 
             while (in.hasNextLine()) {
                 String line = in.nextLine();
