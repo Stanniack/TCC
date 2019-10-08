@@ -6,7 +6,13 @@
 package tcc;
 
 import Implementacao.ComparaInfoProteinas;
+import Implementacao.SequenciaFasta;
 import com.opencsv.CSVWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
@@ -19,6 +25,7 @@ import java.util.List;
  * @author Mateus
  */
 public class TesteCSV {
+
     public static void main(String[] args) throws IOException {
 //        String[] cabecalho = {"nome", "idade", "telefone"};
 //
@@ -36,7 +43,10 @@ public class TesteCSV {
 //        csvWriter.flush();
 //        writer.close();
 
-        new ComparaInfoProteinas().extraiInfoProtIdentficadas();
+//        new ComparaInfoProteinas().identificaProteinas();
+          new SequenciaFasta().obtemPotenciaisEfetoras();
+        
 
     }
+
 }

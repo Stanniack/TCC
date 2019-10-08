@@ -24,7 +24,7 @@ public class Main {
         lista.add("9811111");
         lista.add("4445113");
         
-        if(lista.contains("11"))
+        if(lista.get(0).contains("11"))
             System.out.println("Contains");
 
     }
