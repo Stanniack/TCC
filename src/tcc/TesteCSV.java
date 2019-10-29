@@ -43,8 +43,8 @@ public class TesteCSV {
 //        csvWriter.flush();
 //        writer.close();
 
-//        new ComparaInfoProteinas().identificaProteinas();
-          new SequenciaFasta().obtemPotenciaisEfetoras();
+        new ComparaInfoProteinas().identificaProteinas();
+          //new SequenciaFasta().obtemPotenciaisEfetoras();
         
 
     }

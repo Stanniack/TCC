@@ -14,6 +14,7 @@ public class SequenciaFasta {
     private int TIMER = 25;
 
     private List<String> extraiSequenciaFasta() {
+        
         List<String[]> potenciais = new ComparaInfoProteinas().identificaProteinas();
         List<String> listaDeElementos = new ArrayList<>();
 
@@ -53,9 +54,9 @@ public class SequenciaFasta {
 
     }
 
-    public void obtemPotenciaisEfetoras() throws IOException {
+    public void obtemPotenciaisEfetoras() {
 
-        File f = new File("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\TCC\\sequencia_fasta.txt");
+        File f = new File("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\TCC\\sequencia_fasta_tipo2.txt");
 
         try {
 
@@ -63,6 +64,9 @@ public class SequenciaFasta {
             BufferedWriter bw = new BufferedWriter(fw);
 
             for (String sequenciaFasta : this.extraiSequenciaFasta()) {
+                /* Troca SV=N por ] */
+                sequenciaFasta = sequenciaFasta.replaceFirst("SV=[0-9]", "]");
+                
                 bw.write(sequenciaFasta + "\r\n\r\n");
             }
 

@@ -9,9 +9,9 @@ import java.util.List;
 
 public class ComparaInfoProteinas {
 
-    private int qtdArquivos = 5;
+    private final int qtdArquivos = 9;
 
-    private List<String[]> extraiGenesTratados() {
+    private List<String[]> extraiGenesTratadosTodos() {
 
         List<String[]> listaPotenciaisEfetoras = new ArrayList<>();
         listaPotenciaisEfetoras.add(new String[]{"pmid", "term_id"});
@@ -20,7 +20,8 @@ public class ComparaInfoProteinas {
 
             for (int i = 1; i <= qtdArquivos; i++) {
 
-                String file = "C:\\Users\\fiodo\\OneDrive\\Documentos\\TextMining\\resultados" + i + "_tratado.tsv";
+                /* Alterar  */
+                String file = "C:\\Users\\fiodo\\OneDrive\\Documentos\\TextMining\\" + i + ".tsv";
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 String[] linhas;
                 //br.readLine();
@@ -32,8 +33,7 @@ public class ComparaInfoProteinas {
                     // identifica se é gene
                     if (linhas[1].toLowerCase().equals("gene")) {
 
-                        // if suspeito, verifique todos os genes pra testar
-                        if (!listaPotenciaisEfetoras.contains(linhas[2])) {
+                        if (!listaPotenciaisEfetoras.toString().contains(linhas[2])) {
                             listaPotenciaisEfetoras.add(new String[]{linhas[0], linhas[2]});
                         }
 
@@ -53,6 +53,48 @@ public class ComparaInfoProteinas {
 
     }
 
+    private List<String[]> extraiGenesTratados() {
+
+        List<String[]> listaPotenciaisEfetoras = new ArrayList<>();
+        listaPotenciaisEfetoras.add(new String[]{"pmid", "term_id"});
+
+        try {
+
+
+            /* Alterar  */
+            String file = "C:\\Users\\fiodo\\OneDrive\\Documentos\\TextMining\\1.tsv";
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String[] linhas;
+            //br.readLine();
+
+            while (br.ready()) {
+
+                linhas = br.readLine().split("\t");
+
+                // identifica se é gene
+                if (linhas[1].toLowerCase().equals("gene")) {
+
+                    // if suspeito, verifique todos os genes pra testar
+                    if (!listaPotenciaisEfetoras.toString().contains(linhas[2])) {
+                        listaPotenciaisEfetoras.add(new String[]{linhas[0], linhas[2]});
+                    }
+
+                }
+
+            }
+
+            //System.out.println("Genes:" + listaPotenciaisEfetoras.size());
+        } catch (FileNotFoundException ex) {
+            System.out.println("Arquivo não encontrado: " + ex);
+        } catch (IOException ex) {
+            System.out.println("Falha I/O - E/S: " + ex);
+        }
+
+        return listaPotenciaisEfetoras;
+
+    }
+
+    /* Método traz as proteínas codificadas do proteinas.txt */
     private List<String[]> extraiInfoProtIdentficadas() {
 
         List<String[]> lista = new ArrayList<>();
@@ -78,7 +120,7 @@ public class ComparaInfoProteinas {
 
                     if (!linhas[25].equals("")) {
                         lista.add(new String[]{linhas[0].replace("HGNC:", ""), linhas[1], linhas[2], linhas[25]});
-                        
+
                     } else {
                         lista.add(new String[]{linhas[0].replace("HGNC:", ""), linhas[1], linhas[2], "NULL"});
                         branco++;
@@ -93,6 +135,7 @@ public class ComparaInfoProteinas {
             }
 
             System.out.println("____________________________________________________");
+            System.out.println("-- INFORMAÇÕES PROTEINAS.TXT --");
             System.out.println("Espaços em branco: " + branco + " QTD erros: " + erro
                     + "\nTotal de linhas perdidas: " + (branco + erro));
             System.out.println("____________________________________________________");
@@ -108,11 +151,15 @@ public class ComparaInfoProteinas {
     }
 
     public List<String[]> identificaProteinas() {
-        List<String[]> genes = this.extraiGenesTratados();
+
+        /* Pega as listas para a manipulação dos dados */
+        List<String[]> genes = this.extraiGenesTratadosTodos();
+        //List<String[]> genes = this.extraiGenesTratados();
         List<String[]> proteinas = this.extraiInfoProtIdentficadas();
+
         List<String[]> potenciaisEfetoras = new ArrayList<>();
-        potenciaisEfetoras.add(new String[]{"pmid","hgnc","symbol","name","uniprot_id"});
-        int debug = 0;
+        potenciaisEfetoras.add(new String[]{"pmid", "hgnc", "symbol", "name", "uniprot_id"});
+        int potenciaisProteinas = 0;
 
         // Genes: pmid | hgnc
         // proteinas: hgnc | symbol | name | uniprot_id
@@ -120,18 +167,34 @@ public class ComparaInfoProteinas {
             for (String[] proteina : proteinas) {
                 if (gene[1].equals(proteina[0])) {
                     potenciaisEfetoras.add(new String[]{gene[0], proteina[0], proteina[1], proteina[2], proteina[3]});
-                    debug++;
+                    potenciaisProteinas++;
                 }
             }
         }
         
-//        for (String[] potenciais : potenciaisEfetoras) {
-//            System.out.println(potenciais[1] + " " + potenciais[4]);
-//        }
-
-        System.out.println("Potenciais proteínas encontradas: " + debug);
-        System.out.println("____________________________________________________");
+        /* Lista dos uniprots_ids da SecretE */
+        List<String> uniprotIds = new UniprotID().getUniprotsFromSecretE();
+        int efetorasSecretE = 0;
         
+        for (String[] potencialEfetora : potenciaisEfetoras) {
+            for (String uniprot_id : uniprotIds) {
+                
+                /* Se existir uniprot_id nas potenciais encontradas, remove pois já existe na base de dados*/
+                if (potencialEfetora[4].equals(uniprot_id)) {
+                    potenciaisEfetoras.remove(potencialEfetora);
+                    efetorasSecretE++;
+                }
+            }
+        }
+
+        System.out.println("-- INFORMAÇÕES POTENCIAIS EFETORAS --");
+        System.out.println("Potenciais proteínas encontradas: " + potenciaisProteinas);
+        System.out.println("Efetoras identificas no SecretE: " + efetorasSecretE);
+        System.out.println("Total de potenciais proteínas efetoras retornadas: " 
+                + potenciaisProteinas + " - " + efetorasSecretE + " = "
+                + (potenciaisProteinas - efetorasSecretE));
+        System.out.println("____________________________________________________");
+
         return potenciaisEfetoras;
     }
 }
