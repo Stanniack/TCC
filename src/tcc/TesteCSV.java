@@ -5,7 +5,7 @@
  */
 package tcc;
 
-import Implementacao.ComparaInfoProteinas;
+import Implementacao.InfoProteinas;
 import Implementacao.SequenciaFasta;
 import com.opencsv.CSVWriter;
 import java.io.BufferedReader;
@@ -43,8 +43,9 @@ public class TesteCSV {
 //        csvWriter.flush();
 //        writer.close();
 
-        new ComparaInfoProteinas().identificaProteinas();
+      //  new InfoProteinas().identificaProteinas();
           //new SequenciaFasta().obtemPotenciaisEfetoras();
+          new SequenciaFasta().obtemPotenciaisEfetoras();
         
 
     }

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComparaInfoProteinas {
+public class InfoProteinas {
 
     private final int qtdArquivos = 9;
 
@@ -62,7 +62,7 @@ public class ComparaInfoProteinas {
 
 
             /* Alterar  */
-            String file = "C:\\Users\\fiodo\\OneDrive\\Documentos\\TextMining\\1.tsv";
+            String file = "C:\\Users\\fiodo\\OneDrive\\Documentos\\TextMining\\9.tsv";
             BufferedReader br = new BufferedReader(new FileReader(file));
             String[] linhas;
             //br.readLine();
@@ -73,8 +73,7 @@ public class ComparaInfoProteinas {
 
                 // identifica se é gene
                 if (linhas[1].toLowerCase().equals("gene")) {
-
-                    // if suspeito, verifique todos os genes pra testar
+                    // Verifica se não há repetidos
                     if (!listaPotenciaisEfetoras.toString().contains(linhas[2])) {
                         listaPotenciaisEfetoras.add(new String[]{linhas[0], linhas[2]});
                     }
