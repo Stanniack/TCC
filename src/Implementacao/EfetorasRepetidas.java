@@ -1,8 +1,11 @@
 package Implementacao;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,99 +14,154 @@ import java.util.List;
 public class EfetorasRepetidas {
 
     public void eliminaRepetidas() {
-        
+
         try {
 
-            /* Cabeçaho das proteínas Mat */
-            String fileCabecalho = "C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\efetoras\\mateus\\cabecalho.txt";
-            BufferedReader brCabecalho = new BufferedReader(new FileReader(fileCabecalho));
-            
-            /* Sequência das proteínas Mat */
-            String fileSequencia = "C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\efetoras\\mateus\\fasta.txt";
-            BufferedReader brSequencia = new BufferedReader(new FileReader(fileSequencia));
+            List<String> listaMatCab;
+            List<String> listaMatCab2;
+            List<String> listaMatSeq;
+            List<String> listaMatSeq2;
 
-            /* Listas que conterão as proteínas */
-            List<String> listaMat = new ArrayList<>();
-            List<String> listaMat2 = new ArrayList<>();
+            List<String> listaHerCab;
+            List<String> listaHerCab2;
+            List<String> listaHerSeq;
+            List<String> listaHerSeq2;
 
-            /* Cabeçaho das proteínas Her */
-            String fileCabecalho2 = "C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\efetoras\\hercules\\cabecalho.txt";
-            BufferedReader brCabecalho2 = new BufferedReader(new FileReader(fileCabecalho2));
+            List<String[]> listaNovas = new ArrayList<>();
 
-            /* Sequência das proteínas Her */
-            String fileSequencia2 = "C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\efetoras\\hercules\\fasta.txt";
-            BufferedReader brSequencia2 = new BufferedReader(new FileReader(fileSequencia2));
+            listaMatCab = this.obtemCabecalho("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\efetoras\\mateus\\cabecalho_rf.txt");
+            listaMatSeq = this.obtemSequencia("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\efetoras\\mateus\\fasta_rf.txt");
 
-            List<String> listaHer = new ArrayList<>();
-            List<String> listaHer2 = new ArrayList<>();
+            listaHerCab = this.obtemCabecalho("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\efetoras\\hercules\\cabecalho.txt");
+            listaHerSeq = this.obtemSequencia("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\efetoras\\hercules\\fasta.txt");
 
-            List<String> listaNovas = new ArrayList<>();
-            
-            while (brCabecalho.ready()) {
-
-                listaMat.add(Arrays.toString(brCabecalho.readLine()
-                        .split("----------------------------------------------------------------------")));
-
-            }
-
-            while (brSequencia.ready()) {
-
-                listaMat.add(Arrays.toString(brSequencia.readLine()
-                        .replace(" ", "")
-                        .replace("\\r\\n\\r\\n", "")
-                        .split("----------------------------------------------------------------------")));
-
-            }
-
-            while (brSequencia2.ready()) {
-
-                listaHer.add(Arrays.toString(brSequencia2.readLine()
-                        .replace(" ", "")
-                        .replace("\\r\\n\\r\\n", "")
-                        .split("----------------------------------------------------------------------")));
-
-            }
-            
-
-            System.out.println("Mat: " + listaMat.size());
-            System.out.println("Her: " + listaHer.size());
+            System.out.println("MatCab: " + listaMatCab.size());
+            System.out.println("MatSeq: " + listaMatSeq.size());
+            System.out.println("HerCab: " + listaHerCab.size());
+            System.out.println("HerSeq: " + listaHerSeq.size());
+            System.out.println("----------------------------------");
 
             /* Elima repetidas proteínas Mat */
-            for (String prot : listaMat) {
-                if (!listaMat2.contains(prot)) {
-                    listaMat2.add(prot);
-                }
-            }
+            listaMatCab2 = this.eliminaProteinas(listaMatCab);
+            listaMatSeq2 = this.eliminaProteinas(listaMatSeq);
 
             /* Elima repetidas proteínas Her */
-            for (String prot : listaHer) {
-                if (!listaHer2.contains(prot)) {
-                    listaHer2.add(prot);
-                }
-            }
+            listaHerCab2 = this.eliminaProteinas(listaHerCab);
+            listaHerSeq2 = this.eliminaProteinas(listaHerSeq);
 
-            System.out.println("Mat2: " + listaMat2.size());
-            System.out.println("Her2: " + listaHer2.size());
+            System.out.println("MatCab2: " + listaMatCab2.size());
+            System.out.println("MatSeq2: " + listaMatSeq2.size());
+            System.out.println("HerCab2: " + listaHerCab2.size());
+            System.out.println("HerSeq2: " + listaHerSeq2.size());
+            System.out.println("----------------------------------");
 
-            int debug = 0;
-            for (String protMat : listaMat2) {
-                if (!listaHer2.contains(protMat)) {
-                    System.out.println(protMat);
-                    debug++;
-                }
+            this.gravaNovasEfetoras(listaHerSeq2, listaMatCab2, listaMatSeq2, "efetorasFinaisRF");
 
-            }
-
-            System.out.println(debug);
-
-        } catch (FileNotFoundException ex) {
-            System.out.println("Arquivo não encontrado: " + ex);
-        } catch (IOException ex) {
-            System.out.println("Falha I/O - E/S: " + ex);
         } catch (ArrayIndexOutOfBoundsException ex) {
             System.out.println("Quebra de array: " + ex);
         }
 
+    }
+
+    private List<String> eliminaProteinas(List<String> lista) {
+        List<String> lista2 = new ArrayList<>();
+
+        for (String item : lista) {
+            if (!lista2.contains(item)) {
+                lista2.add(item);
+            }
+        }
+
+        return lista2;
+    }
+
+    private List<String> obtemCabecalho(String file) {
+
+        List<String> listaCabecalho = new ArrayList<>();
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            while (br.ready()) {
+
+                listaCabecalho.add(Arrays.toString(br.readLine()
+                        .split("----------------------------------------------------------------------")));
+
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Arquivo não encontrado: " + ex);
+        } catch (IOException ex) {
+            System.out.println("Erro E/S: " + ex);
+        }
+
+        return listaCabecalho;
+
+    }
+
+    private List<String> obtemSequencia(String file) {
+        List<String> listaSequencia = new ArrayList<>();
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            while (br.ready()) {
+
+                listaSequencia.add(Arrays.toString(br.readLine()
+                        .replace(" ", "")
+                        .replace("\\r\\n\\r\\n", "")
+                        .split("----------------------------------------------------------------------")));
+
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Arquivo não encontrado: " + ex);
+        } catch (IOException ex) {
+            System.out.println("Erro E/S: " + ex);
+        }
+
+        return listaSequencia;
+    }
+
+    private void gravaNovasEfetoras(List<String> listaHerSeq2, List<String> listaCab, List<String> listaSeq, String nomeTxt) {
+        List<String> novasEfetoras = new ArrayList<>();
+
+        int debug = 0;
+        for (int i = 0; i < listaSeq.size(); i++) {
+
+            if (!listaHerSeq2.contains(listaSeq.get(i))) {
+                String prot = listaCab.get(i).replace("[", "").replace("]", "")
+                        + " "
+                        + listaSeq.get(i).replace("[", "").replace("]", "");
+
+                novasEfetoras.add(prot);
+                debug++;
+            }
+
+        }
+
+        System.out.println("Novas proteínas '" + nomeTxt + "': " + debug);
+
+        File file = new File("C:\\Users\\fiodo\\OneDrive\\Área de Trabalho\\TCC\\" + nomeTxt + ".txt");
+
+        try {
+
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for (String novaEfetora : novasEfetoras) {
+
+                bw.write(novaEfetora + "\r\n\r\n");
+            }
+
+            bw.flush();
+            bw.close();
+
+        } catch (IOException e) {
+            System.out.println("Erro de arquivo: " + e);
+        }
     }
 
 }
